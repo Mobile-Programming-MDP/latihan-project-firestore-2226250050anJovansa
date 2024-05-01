@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "103436567892",
+    "project_id": "crud-tugas-pab2",
+    "storage_bucket": "crud-tugas-pab2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:103436567892:android:f442ef97df858405a5f4c1",
+        "android_client_info": {
+          "package_name": "com.example.flutterlist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-s2zVbExsWAM8iqGVyKhA-OYTl2WNJjA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
