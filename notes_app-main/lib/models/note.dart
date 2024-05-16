@@ -23,7 +23,7 @@ class Note {
       id: doc.id,
       title: data['title'],
       description: data['description'],
-      imageUrl: data['imageUrl'],
+      imageUrl: data['image_url'],
       createdAt: data['created_at'] as Timestamp,
       updatedAt: data['updated_at'] as Timestamp,
     );
@@ -33,7 +33,7 @@ class Note {
     return {
       'title': title,
       'description': description,
-      'image_Url': imageUrl,
+      'image_url': imageUrl,
       'created_at': createdAt,
       'updated_at': updatedAt,
     };
