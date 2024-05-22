@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:notes/models/note.dart';
 import 'package:notes/services/note_service.dart';
 import 'package:notes/widgets/note_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NoteListScreen extends StatefulWidget {
   const NoteListScreen({super.key});
@@ -75,26 +76,45 @@ class NoteList extends StatelessWidget {
                             )
                           : Container(),
                       ListTile(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return NoteDialog(note: document);
-                            },
-                          );
-                        },
-                        title: Text(document.title),
-                        subtitle: Text(document.description),
-                        trailing: InkWell(
                           onTap: () {
-                            showAlertDialog(context, document);
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return NoteDialog(note: document);
+                              },
+                            );
                           },
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Icon(Icons.delete),
-                          ),
-                        ),
-                      ),
+                          title: Text(document.title),
+                          subtitle: Text(document.description),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  String url =
+                                      "https://www.google.com/maps/search/?api=i&query=${document!.lat},${document!.lng}";
+                                  Uri uri = Uri.parse(url);
+                                  _launchUrl(uri);
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Icon(Icons.map),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  showAlertDialog(context, document);
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Icon(Icons.delete),
+                                ),
+                              ),
+                            ],
+                          )),
                     ],
                   ),
                 );
@@ -103,6 +123,12 @@ class NoteList extends StatelessWidget {
         }
       },
     );
+  }
+
+  Future<void> _launchUrl(_url) async {
+    if (!await launchUrl(_url)) {
+      throw Exception("Cloud not launch $_url");
+    }
   }
 
   showAlertDialog(BuildContext context, Note document) {
