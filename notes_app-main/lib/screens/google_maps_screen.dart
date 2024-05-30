@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class GoogleMapsScreen extends StatefulWidget {
   final double latitude;
   final double longitude;
+
   const GoogleMapsScreen(
       {super.key, required this.latitude, required this.longitude});
 
@@ -17,26 +16,29 @@ class GoogleMapsScreen extends StatefulWidget {
 class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
   final Completer<GoogleMapController> _controller = Completer();
   late CameraPosition _cameraPosition;
-  late Set<Marker> _marker;
+  late Set<Marker> _markers;
   late MarkerId _markerId;
 
   @override
-  void initstate() {
+  void initState() {
     super.initState();
     _cameraPosition = CameraPosition(
-        target: LatLng(widget.latitude, widget.longitude), zoom: 15);
+      target: LatLng(
+        widget.latitude,
+        widget.longitude,
+      ),
+      zoom: 15,
+    );
 
-    _marker = {};
+    _markers = {};
     _markerId =
         MarkerId(widget.latitude.toString() + widget.longitude.toString());
-    _marker.add(
+    _markers.add(
       Marker(
         markerId: _markerId,
         position: LatLng(widget.latitude, widget.longitude),
         infoWindow: const InfoWindow(
-          title: "Your Location",
-          snippet: "Your current location is here",
-        ),
+            title: "Your Location", snippet: "your current location is here"),
       ),
     );
   }
@@ -52,26 +54,23 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
         myLocationButtonEnabled: true,
         mapType: MapType.normal,
         initialCameraPosition: _cameraPosition,
-        markers: _marker,
+        markers: _markers,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
-          Future.delayed(
-            const Duration(milliseconds: 500),
-            () {
-              controller.showMarkerInfoWindow(_markerId);
-            },
-          );
+          Future.delayed(const Duration(milliseconds: 500), () {
+            controller.showMarkerInfoWindow(_markerId);
+          });
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _gotolocation,
-        label: const Text("To your location"),
+        onPressed: _geoLocation,
+        label: const Text('To your location'),
         icon: const Icon(Icons.directions_car),
       ),
     );
   }
 
-  Future<void> _gotolocation() async {
+  Future<void> _geoLocation() async {
     final GoogleMapController controller = await _controller.future;
     await controller
         .animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
