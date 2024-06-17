@@ -40,6 +40,16 @@ class _NoteDialogState extends State<NoteDialog> {
     }
   }
 
+  Future<void> _pickCamera() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = pickedFile;
+      });
+    }
+  }
+
   Future<void> _getLocation() async {
     final location = await LocationService().getCurrentLocation();
 
@@ -88,9 +98,17 @@ class _NoteDialogState extends State<NoteDialog> {
                       )
                     : Container()),
           ),
-          TextButton(
-            onPressed: _pickImage,
-            child: const Text('Pick Image'),
+          Row(
+            children: [
+              TextButton(
+                onPressed: _pickImage,
+                child: const Text('Pick Image'),
+              ),
+              TextButton(
+                onPressed: _pickCamera,
+                child: const Text('Pick Camera'),
+              ),
+            ],
           ),
           TextButton(
             onPressed: _getLocation,

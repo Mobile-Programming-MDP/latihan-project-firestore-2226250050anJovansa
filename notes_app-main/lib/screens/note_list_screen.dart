@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:notes/models/note.dart';
 import 'package:notes/screens/google_maps_screen.dart';
+import 'package:notes/screens/setting.dart';
 import 'package:notes/services/note_service.dart';
 import 'package:notes/widgets/note_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 
 class NoteListScreen extends StatefulWidget {
   const NoteListScreen({super.key});
@@ -19,6 +20,15 @@ class _NoteListScreenState extends State<NoteListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notes'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const Settings()));
+            },
+            icon: const Icon(Icons.settings),
+          ),
+        ],
       ),
       body: const NoteList(),
       floatingActionButton: FloatingActionButton(
@@ -96,7 +106,6 @@ class NoteList extends StatelessWidget {
                                   //     "https://www.google.com/maps/search/?api=i&query=${document!.lat},${document!.lng}";
                                   // Uri uri = Uri.parse(url);
                                   // _launchUrl(uri);
-
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -112,7 +121,7 @@ class NoteList extends StatelessWidget {
                                   child: Icon(Icons.map),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               InkWell(
@@ -122,6 +131,18 @@ class NoteList extends StatelessWidget {
                                 child: const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 10),
                                   child: Icon(Icons.delete),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Share.share(document.description);
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Icon(Icons.share),
                                 ),
                               ),
                             ],
@@ -136,6 +157,7 @@ class NoteList extends StatelessWidget {
     );
   }
 
+  // ignore: unused_element, no_leading_underscores_for_local_identifiers
   Future<void> _launchUrl(_url) async {
     if (!await launchUrl(_url)) {
       throw Exception("Cloud not launch $_url");
