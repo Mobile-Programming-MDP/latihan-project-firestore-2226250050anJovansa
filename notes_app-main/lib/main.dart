@@ -6,7 +6,6 @@ import 'package:notes/firebase_options.dart';
 import 'package:notes/provider/provider.dart';
 import 'package:notes/screens/note_list_screen.dart';
 import 'dart:io';
-
 import 'package:provider/provider.dart';
 
 void main() async {
